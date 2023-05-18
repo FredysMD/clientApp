@@ -1,0 +1,25 @@
+## Client App
+
+Client App es una aplicación que permite consultar los datos de los clientes para eventuales llamadas.
+
+## Techs
+
+Las tecnologías usadas para la creación de la aplicación fueron PostgreSQL a nivel de base de datos, Una REST API creada con PHP, implementando patrón MVC. A nivel de front se usó HTML, JS vanila y Bootstrap para el diseño.
+
+## Patrones de diseño
+
+Se implementaron los patrones de diseño DAO y Singleton. Fueron usados en cada una de las clases que se implementaron a nivel de la API. 
+
+## Models
+
+User Model 
+
+## Controllers
+
+BaseController
+UserController
+
+## Views
+
+Home -> Listado de clientes y la opción de cerrar sesión.
+Index -> Login. 

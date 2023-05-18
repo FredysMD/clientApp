@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Clientes en el sistema</title>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">ClientAPI</a>
+        <a class="nav-item nav-link" href="#" tabindex="-1" aria-disabled="true">
+            <button onclick="logout()" class="btn btn-info">Cerrar sesión</button> 
+        </a>
+    </nav>
+    <div class="container vh-100 justify-content-center pt-5">
+        <h2>Clientes</h2>
+        <div class="container pt-4">
+            <div id="card-container" class="row">
+            </div>
+        </div>
+    </div>
+    <script src="./js/home.js">
+        checkTokenAndRedirect();
+    </script>
+</body>
+</html>
