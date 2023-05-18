@@ -12,9 +12,9 @@ class UserDAO {
 
         $query = "SELECT * FROM clients WHERE usuario = $1 and contrasena = $2 and estado = true";
 
-        //$passwordMD5 = md5($password);
+        $passwordMD5 = md5($password);
 
-        $result = pg_query_params($this->connection, $query, array($username, $password));
+        $result = pg_query_params($this->connection, $query, array($username, $passwordMD5));
         
         if (!($result && pg_num_rows($result) > 0))
             return null;
@@ -25,6 +25,30 @@ class UserDAO {
 
         $user->setId($row['id_client']);
         $user->setUserName($row['usuario']);
+
+        return $user->toArray();
+    }
+
+    public function getUserById($id){
+
+        $query = "SELECT * FROM clients WHERE id_client = $1 and estado = true";
+
+        $result = pg_query_params($this->connection, $query, array($id));
+        
+        if (!($result && pg_num_rows($result) > 0))
+            return null;
+    
+        $row = pg_fetch_assoc($result);
+        
+        $user = UserModel::getInstance();
+
+        $user->setId($row['id_client']);
+        $user->setName($row['nombre']);
+        $user->setUserName($row['usuario']);
+        $user->setLastName($row['apellidos']);
+        $user->setEmail($row['email']);
+        $user->setPhone($row['telefono']);
+        $user->setBirthDate($row['fecha_nacimiento']);
 
         return $user->toArray();
     }
@@ -96,9 +120,9 @@ class UserDAO {
         return $result;
     }
 
-    public function softdelete($id){
+    public function softDelete($id){
 
-        $query = "UPDATE clients SET estado = false WHERE id = $1";
+        $query = "UPDATE clients SET estado = false WHERE id_client = $1";
         $result = pg_query_params($this->connection, $query, array($id));
         
         return $result;

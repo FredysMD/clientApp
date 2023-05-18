@@ -12,9 +12,13 @@ class UserModel {
     private $phone;
     private $birthDate;
     
-    public function __construct() {
+    // No permitir instanciación a través del constructor -> Singleton
+
+    private function __construct() {
 
     }
+
+    // Instancía desde la clase -> Singleton
 
     public static function getInstance() {
         if (self::$instance === null) {
@@ -33,6 +37,10 @@ class UserModel {
         return $this->username;
     }
 
+    public function getPassword(){
+        return $this->password;
+    }
+
     public function getName(){
         return $this->name;
     }
@@ -49,7 +57,7 @@ class UserModel {
         return $this->phone;
     }
 
-    public function getBirtDate(){
+    public function getBirthDate(){
         return $this->birthDate;
     }
     

@@ -2,37 +2,25 @@
 
 // Función para realizar cualquier patición a una API
 
-function peticiones(url, body, method, redirectUrl, token){
-
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-    
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-    }
+function peticion(url, body, redirectUrl){
 
     fetch(url, {
-        method: method,
-        headers: headers,
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: body
     })
     .then(response => response.json())
     .then(data => {
-      
-        if(method == "POST"){
-            const token = data?.token;
-            localStorage.setItem("token", token || "");
-            
-            if (redirectUrl!=="" && token) {
-              window.location.href = redirectUrl;
-            }
-        }
 
-        if(method == "GET"){
-            generateCards(data);
+        const token = data?.token;
+        localStorage.removeItem("token");
+        localStorage.setItem("token", token || "");
+        
+        if (redirectUrl!=="" && token) {
+            window.location.href = redirectUrl;
         }
-
     })
     .catch(error => {
       console.error('Error:', error);
@@ -59,10 +47,10 @@ function login(event){
         password: password
     });
 
-    peticiones(
+
+    peticion(
         "http://localhost/clientAPI/app/index.php/user/login", 
         creedenciales,
-        "GET",
         "http://localhost/clientAPI/app/views/home.html"
     );
 }

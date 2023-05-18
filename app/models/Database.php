@@ -5,7 +5,8 @@ class Database {
     private static $instance;
     private $connection;
 
-    public function __construct(){
+    // No permitir instanciación a través del constructor -> Singleton
+    private function __construct(){
 
         try {
             $this->connection = pg_connect("
@@ -20,6 +21,8 @@ class Database {
             echo "No hemos podido conectarnos a la base de datos";   
         }
     }
+
+    // Instancía desde la clase -> Singleton
 
     public static function getInstance(){
  

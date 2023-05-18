@@ -4,84 +4,101 @@
 class UserController extends BaseController{
     
     private $userDAO;
-    private $resquestMethod;
+
+    public function __construct(){
+        $this->userDAO = new UserDAO();
+    }
 
     public function login(){
 
-        $this->requestMethod = $_SERVER["REQUEST_METHOD"];
-        $this->userDAO = new UserDAO();
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        if (strtoupper($this->requestMethod) == 'POST') {
+        if (strtoupper($requestMethod) !== 'POST') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
 
-            $jsonData = file_get_contents('php://input');
-            $data = json_decode($jsonData, true);
+        $jsonData = file_get_contents('php://input');
+        $data = json_decode($jsonData, true);
 
-            if ($data !== null) {
-                $username = $data['username'];
-                $password = $data['password'];
+        if ($data !== null) {
+            $username = $data['username'];
+            $password = $data['password'];
 
-                $user = $this->userDAO->getByUsernameAndPassword($username, $password);
+            $user = $this->userDAO->getByUsernameAndPassword($username, $password);
 
-                if (!$user) {
-                    $this->sendOutput(
-                        json_encode(array('error' => 'Invalid username or password')),
-                        array('Content-Type: application/json', 'HTTP/1.1 401 Unauthorized')
-                    );
-                }
-                
-                $jwt = JWT::getInstance('F-JaNdRgUkXp2r5u8x/A?D(G+KbPeShVmYq3t6w9y$B&E)H@McQfTjWnZr4u7x!A');
-
-                $payload = [
-                    'user_id' => $user['id'],
-                    'username' => $user['username']
-                ];
-
-                $expiration = time() + (60 * 60); // 1 hora
-                $token = $jwt->generateToken($payload, $expiration);
-
-                $response = [
-                    "userId" => $user["id"],
-                    "username" => $user["username"],
-                    "token" => $token
-                ];
-
+            if (!$user) {
                 $this->sendOutput(
-                    json_encode($response),
-                    array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+                    json_encode(array('error' => 'Invalid username or password')),
+                    array('Content-Type: application/json', 'HTTP/1.1 401 Unauthorized')
                 );
-                
             }
+            
+            $payload = [
+                'user_id' => $user['id'],
+                'username' => $user['username']
+            ];
+
+            $expiration = 60; // 1 hora
+            
+            $token = createToken($payload, 60);
+
+            $response = [
+                "userId" => $user["id"],
+                "username" => $user["username"],
+                "token" => $token
+            ];
+
+            $this->sendOutput(
+                json_encode($response),
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
         }
     }
 
     public function getAllUsers(){
 
-        $this->resquestMethod = $_SERVER["REQUEST_METHOD"];
-        $this->userDAO = new UserDAO();
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        if (strtoupper($this->resquestMethod) == 'GET'){
-            
-            $users = $this->userDAO->getAllUsers();
-    
-            if ($users) {
-                $this->sendOutput(
-                    json_encode($users),
-                    array('Content-Type: application/json', 'HTTP/1.1 200 OK')
-                );
-            } else {
-                $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
-                    array('Content-Type: application/json', $strErrorHeader)
-                );
-            }
-        } 
+        if (strtoupper($requestMethod) !== 'GET') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
+        
+        $users = $this->userDAO->getAllUsers();
+
+        if (!$users) {
+            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+
+        $this->sendOutput(
+            json_encode($users),
+            array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+        );
     }
 
-    public function getUserById($id){
+    public function getUserById(){
+
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        
+        if (strtoupper($requestMethod) !== 'GET') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
 
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
 
         if($data != null){
+
             $id = $data["id"];
 
             $user = $this->userDAO->getUserById($id);
@@ -91,55 +108,129 @@ class UserController extends BaseController{
                 $menssage = ['error' => 'User not found'];
             }
 
-            return json_encode($user || $menssage);
+            $this->sendOutput(
+                json_encode($user ?: $menssage),
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK') 
+            );
         }
 
     }
 
-    public function createUser($data){
+    public function createUser(){
+
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        if (strtoupper($requestMethod) !== 'POST') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
 
         $jsonData = file_get_contents('php://input');
         $data = json_decode($jsonData, true);
 
-        $user = new UserModel();
-        
-        $user->setName($data['name']);
-        $user->setEmail($data['email']);    
+        if($data != null){
 
-        $this->userDAO->createUser($user);
-
-        http_response_code(201);
-        return json_encode(['message' => 'User created successfully']);
-    }
-
-    public function updateUser($id, $data){
-        
-        $user = $this->userDAO->getUserById($id);
-
-        if ($user) {
+            $user = UserModel::getInstance();
+            
+            $user->setUserName($data['username']);
+            $user->setPassword(md5($data['password']));
             $user->setName($data['name']);
-            $user->setEmail($data['email']);
+            $user->setLastName($data['lastName']);
+            $user->setEmail($data['email']);    
+            $user->setPhone($data['phone']);
+            $user->setBirthDate($data['birthDate']);
+    
+            $this->userDAO->create($user);
 
-            $this->userDAO->updateUser($user);
+            http_response_code(201);
 
-            return json_encode(['message' => 'User updated successfully']);
-        } else {
-            http_response_code(404);
-            return json_encode(['error' => 'User not found']);
+            $this->sendOutput(
+                json_encode(['message' => 'User created successfully']),
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
         }
     }
 
-    public function deleteUser($id){
+    public function updateUser(){
+        
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-        $user = $this->userDAO->getUserById($id);
+        if (strtoupper($requestMethod) !== 'PUT') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
 
-        if ($user) {
-            $this->userDAO->deleteUser($id);
+        $jsonData = file_get_contents('php://input');
+        $data = json_decode($jsonData, true);
 
-            return json_encode(['message' => 'User deleted successfully']);
-        } else {
-            http_response_code(404);
-            return json_encode(['error' => 'User not found']);
+        if($data != null){
+
+            $user = $this->userDAO->getUserById($data["id"]);
+    
+            if (!$user) {
+                http_response_code(404);
+                $this->sendOutput(
+                    json_encode(array('error' => 'User not found')),
+                    array('Content-Type: application/json', 'HTTP/1.1 404 Not found')
+                );
+            } 
+            
+            $user = UserModel::getInstance();
+
+            $user->setUserName($data['username']);
+            $user->setPassword(md5($data['password']));
+            $user->setName($data['name']);
+            $user->setLastName($data['lastName']);
+            $user->setEmail($data['email']);    
+            $user->setPhone($data['phone']);
+            $user->setBirthDate($data['birthDate']);
+
+            $this->userDAO->update($user);
+            
+            $this->sendOutput(
+                json_encode(['message' => 'User updated successfully']),
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        }
+    }
+
+    public function deleteUser(){
+
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+        if (strtoupper($requestMethod) !== 'PUT') {
+            $this->sendOutput(
+                json_encode(array('error' => 'Invalid request method')),
+                array('Content-Type: application/json', 'HTTP/1.1 405 Method Not Allowed')
+            );
+        }
+
+        
+        $jsonData = file_get_contents('php://input');
+        $data = json_decode($jsonData, true);
+        
+        if($data != null){
+            
+            $user = $this->userDAO->getUserById($data['id']);
+
+            if (!$user) {
+                http_response_code(404);
+                $this->sendOutput(
+                    json_encode(array('error' => 'User not found')),
+                    array('Content-Type: application/json', 'HTTP/1.1 404 Not found')
+                );
+            } 
+            
+            $this->userDAO->softDelete($user["id"]);
+ 
+            $this->sendOutput(
+                json_encode(['message' => 'User deleted successfully']),
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
         }
     }
 }
