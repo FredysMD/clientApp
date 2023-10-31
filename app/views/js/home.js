@@ -77,7 +77,7 @@ function generateCards(data) {
 
             cardContainer.appendChild(row);
         }
-    } else {
+    } else { 
         console.error("Error: Datos inválidos");
     }
 }
