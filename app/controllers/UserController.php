@@ -1,6 +1,6 @@
 <?php
   
-
+ 
 class UserController extends BaseController{
     
     private $userDAO;
