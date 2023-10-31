@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /**
  *  @payload es un array con datos relacionados con las creedenciales del usuario
