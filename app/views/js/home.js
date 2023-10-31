@@ -84,7 +84,7 @@ function generateCards(data) {
 
 // ---------------------------------------- //
 
-const token = logged();
+const token = logged(); 
 
 
 if(token == "" || token == null) {

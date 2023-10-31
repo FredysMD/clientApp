@@ -13,5 +13,5 @@ function createToken($payload, $timeExpiration){
     $expiration = time() + (60 * $timeExpiration); // 1 hora
     $token = $jwt->generateToken($payload, $expiration);
 
-    return $token;
+    return $token; 
 }
