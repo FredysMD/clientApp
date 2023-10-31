@@ -41,7 +41,7 @@ function generateCards(data) {
         cardContainer.innerHTML = "";
         const len = data.length;
         // Iterar sobre los datos y generar los cards
-        for (let i = 0; i < len; i += 3) {
+        for (let i = 0; i < len; i += 3) { 
             // Crear elementos HTML dinámicamente
             let row = document.createElement("div");
             row.classList.add("row");
