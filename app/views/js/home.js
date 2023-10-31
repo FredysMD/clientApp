@@ -84,10 +84,10 @@ function generateCards(data) {
 
 // ---------------------------------------- //
 
-const token = logged(); 
+const token = logged();  
 
 
-if(token == "" || token == null) {
+if(token == "" || token == null) { 
     window.location.href = "http://localhost/clientAPI/app/views/";
 }else{
     peticiones(
