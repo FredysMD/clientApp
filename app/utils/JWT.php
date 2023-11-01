@@ -1,6 +1,6 @@
 <?php 
 
-class JWT
+class JWT 
 { 
     private static $instance;
     private $secretKey;
