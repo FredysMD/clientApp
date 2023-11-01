@@ -1,7 +1,7 @@
 <?php 
 
 class JWT
-{
+{ 
     private static $instance;
     private $secretKey;
      
