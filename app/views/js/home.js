@@ -31,7 +31,7 @@ function logout(){
     window.location.href = "http://localhost/clientAPI/app/views/";
 }
 
-// ---------------------------------------- //
+// ---------------------------------------- // 
 
 function generateCards(data) {
     if (data && Array.isArray(data)) {
