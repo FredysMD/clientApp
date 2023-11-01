@@ -22,7 +22,7 @@ class UserDAO {
         $row = pg_fetch_assoc($result);
         
         $user = UserModel::getInstance();
-
+ 
         $user->setId($row['id_client']);
         $user->setUserName($row['usuario']);
 
