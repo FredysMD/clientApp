@@ -3,7 +3,7 @@ class BaseController{
        
     public function __call($name, $arguments){
         $this->sendOutput('', array('HTTP/1.1 404 Not Found'));
-    }
+    } 
      
     protected function getUriSegments(){
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
