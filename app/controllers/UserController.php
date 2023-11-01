@@ -1,7 +1,7 @@
 <?php
    
       
-class UserController extends BaseController{ 
+class UserController extends BaseController{  
     
     private $userDAO;
 

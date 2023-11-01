@@ -26,7 +26,7 @@ class UserDAO {
         $user->setId($row['id_client']);
         $user->setUserName($row['usuario']);
 
-        return $user->toArray(); 
+        return $user->toArray();  
     }
   
     public function getUserById($id){
