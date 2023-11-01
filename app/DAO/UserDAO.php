@@ -19,7 +19,7 @@ class UserDAO {
         if (!($result && pg_num_rows($result) > 0))
             return null;
     
-        $row = pg_fetch_assoc($result); 
+        $row = pg_fetch_assoc($result);
         
         $user = UserModel::getInstance();
 
