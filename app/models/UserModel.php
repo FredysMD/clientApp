@@ -1,7 +1,7 @@
 <?php
 
 class UserModel {
- 
+  
     private static $instance = null;
     private $id;
     private $username;

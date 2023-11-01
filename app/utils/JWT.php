@@ -1,11 +1,11 @@
 <?php 
 
 class JWT
-{  
+{ 
     private static $instance;
     private $secretKey;
      
-    public function __construct($secretKey){
+    public function __construct($secretKey){ 
         $this->secretKey = $secretKey;
     }
 
