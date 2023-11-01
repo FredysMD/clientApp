@@ -6,7 +6,7 @@ class UserController extends BaseController{
     private $userDAO;
 
     public function __construct(){
-        $this->userDAO = new UserDAO();
+        $this->userDAO = new UserDAO(); 
     }
 
     public function login(){
