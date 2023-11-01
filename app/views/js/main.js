@@ -1,6 +1,6 @@
 
 
-// Función para realizar cualquier patición a una API
+// Función para realizar cualquier patición a una API 
 
 function peticion(url, body, redirectUrl){
 
