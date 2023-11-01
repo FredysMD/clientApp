@@ -28,7 +28,7 @@ class UserDAO {
 
         return $user->toArray();
     }
-
+ 
     public function getUserById($id){
 
         $query = "SELECT * FROM clients WHERE id_client = $1 and estado = true";

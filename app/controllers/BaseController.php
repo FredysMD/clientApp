@@ -1,4 +1,4 @@
-<?php 
+<?php  
 class BaseController{
       
     public function __call($name, $arguments){
