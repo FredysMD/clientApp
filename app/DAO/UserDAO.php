@@ -106,7 +106,7 @@ class UserDAO {
                 WHERE usuario = $7";
         
         $params = array(
-            md5($user->getPassword()), 
+            md5($user->getPassword()),  
             $user->getName(),
             $user->getLastName(),
             $user->getEmail(),
