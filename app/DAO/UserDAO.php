@@ -101,7 +101,7 @@ class UserDAO {
                 nombre = $2,
                 apellidos = $3,
                 email = $4,
-                telefono = $5,
+                telefono = $5, 
                 fecha_nacimiento = $6
                 WHERE usuario = $7";
         
