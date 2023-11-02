@@ -2,7 +2,7 @@
 
 class JWT 
 { 
-    private static $instance;  
+    private static $instance;
     private $secretKey;
      
     public function __construct($secretKey){ 
