@@ -4,7 +4,7 @@ define("PROJECT_ROOT_PATH", __DIR__ . "/../");
 require_once PROJECT_ROOT_PATH . "./index.php";    
 // include main jwt class  
 require_once PROJECT_ROOT_PATH . "/utils/JWT.php";
-require_once PROJECT_ROOT_PATH . "/utils/helper.php"; 
+require_once PROJECT_ROOT_PATH . "/utils/helper.php";  
 // include the base controller file    
 require_once PROJECT_ROOT_PATH . "/controllers/BaseController.php";
 // include the base models file 
