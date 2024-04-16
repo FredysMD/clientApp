@@ -1,7 +1,7 @@
 <?php
  
 class UserDAO {
-
+ 
     private $connection;
 
     public function __construct() {
