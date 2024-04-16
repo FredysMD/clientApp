@@ -9,7 +9,7 @@
     }
     require __DIR__ . "/controllers/UserController.php";
 
-
+    
     $userController = new UserController();
     $strMethodName = $uri[5];
     
