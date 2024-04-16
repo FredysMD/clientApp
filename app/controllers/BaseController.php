@@ -26,7 +26,7 @@ class BaseController{
         exit;
     }
 
-    private function getTokenFromHeader(){
+    private function getTokenFromHeader(){ 
 
         $headers = apache_request_headers();
         
