@@ -6,8 +6,8 @@
     if ((isset($uri[4]) && $uri[4] != 'user') || !isset($uri[4])) {
         header("HTTP/1.1 404 Not Found"); 
         exit();
-    }
-    require __DIR__ . "/controllers/UserController.php";
+    } 
+    require __DIR__ . "/controllers/UserController.php"; 
 
     
     $userController = new UserController();
