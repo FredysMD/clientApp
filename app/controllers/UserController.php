@@ -5,7 +5,7 @@ class UserController extends BaseController{
     
     private $userDAO;
 
-    public function __construct(){
+    public function __construct(){ 
         $this->userDAO = new UserDAO(); 
     }
 
