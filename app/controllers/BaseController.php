@@ -8,7 +8,7 @@ class BaseController{
     protected function getUriSegments(){
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = explode( '/', $uri );
-        return $uri;
+        return $uri; 
     }
   
     protected function getQueryStringParams(){
